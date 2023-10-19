@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1 id="textToUpdate">Text Updated Based on Input</h1>
+    <input type="text" id="textInput" placeholder="Enter text" />
+    <input type="color" id="colorInput" />
+
+    <script>
+      const textToUpdate = document.getElementById("textToUpdate"); // fetch h1 id
+      const textInput = document.getElementById("textInput"); // fetch text input
+      const colorInput = document.getElementById("colorInput"); // fetch color input id
+
+      //   function to manipulate the input field, attach event listener to textInput
+      textInput.addEventListener("input", () => {
+        textToUpdate.innerText = textInput.value; // updates the text content
+      });
+
+      // like the previous unction but change the background color
+      colorInput.addEventListener("input", () => {
+        document.body.style.backgroundColor = colorInput.value;
+      });
+    </script>
+  </body>
+</html>
