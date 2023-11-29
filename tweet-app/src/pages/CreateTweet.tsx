@@ -2,7 +2,7 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Define the base URL for the tweets API
-const tweets_api_base_url = "http://localhost:8082";
+const tweets_api_base_url = "http://localhost:5173";
 
 // CreateTweet component with TypeScript
 const CreateTweet: React.FC = () => {

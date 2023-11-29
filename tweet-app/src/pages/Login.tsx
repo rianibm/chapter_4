@@ -1,7 +1,8 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
-const tweets_api_base_url = "http://localhost:8082";
+// const tweets_api_base_url = "http://localhost:8082";
+const tweets_api_base_url = "http://localhost:5173";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
