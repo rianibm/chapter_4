@@ -1,6 +1,6 @@
-import { PlusCircleIcon } from '@heroicons/react/20/solid';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { PlusCircleIcon } from "@heroicons/react/20/solid";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 interface UserEntity {
   id: number;
@@ -15,25 +15,26 @@ interface TweetEntity {
   user: UserEntity;
 }
 
-const tweets_api_base_url = 'http://localhost:8082';
+const tweets_api_base_url = "http://localhost:8082";
 
-export default function Home() {
-  const [tweets, setTweets] = useState([]);
+const Home = () => {
+  // const [tweets, setTweets] = useState([]);
+  const [tweets, setTweets] = useState<TweetEntity[]>([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const fetchTweets = async () => {
-      const response = await fetch(tweets_api_base_url + '/api/tweets');
+      const response = await fetch(tweets_api_base_url + "/api/tweets");
       const responseJSON = await response.json();
 
       setTweets(responseJSON.data.tweets);
     };
 
     const checkIsLoggedIn = () => {
-      const accessToken = localStorage.getItem('access_token');
-
-      if (accessToken) setIsLoggedIn(true);
-      else setIsLoggedIn(false);
+      const accessToken = localStorage.getItem("access_token");
+      setIsLoggedIn(!!accessToken);
+      /* if (accessToken) setIsLoggedIn(true);
+      else setIsLoggedIn(false); */
     };
 
     fetchTweets();
@@ -41,57 +42,61 @@ export default function Home() {
   }, []);
 
   const logoutHandler = () => {
-    localStorage.removeItem('access_token');
-
+    localStorage.removeItem("access_token");
     setIsLoggedIn(false);
   };
 
+  const renderLoginButton = () => (
+    <Link to="/login">
+      <button className="py-2 px-3 bg-black text-white rounded-lg">
+        Login
+      </button>
+    </Link>
+  );
+
+  const renderLogoutButton = () => (
+    <button
+      className="py-2 px-3 bg-black text-white rounded-lg"
+      onClick={logoutHandler}
+    >
+      Logout
+    </button>
+  );
+
   return (
-    <div className='flex w-full bg-gray-300 place-content-center min-h-screen'>
-      <div className='w-[600px] bg-gray-200 p-5'>
-        <div className='flex justify-between'>
-          <h1 className='font-bold text-3xl'>Home</h1>
-          {isLoggedIn ? (
-            <button
-              className='py-2 px-3 bg-black text-white rounded-lg'
-              onClick={logoutHandler}
-            >
-              Logout
-            </button>
-          ) : (
-            <Link to='/login'>
-              <button className='py-2 px-3 bg-black text-white rounded-lg'>
-                Login
-              </button>
-            </Link>
-          )}
+    <div className="flex w-full bg-gray-300 place-content-center min-h-screen">
+      <div className="w-[600px] bg-gray-200 p-5">
+        <div className="flex justify-between">
+          <h1 className="font-bold text-3xl">Home</h1>
+          {isLoggedIn ? renderLogoutButton() : renderLoginButton()}
         </div>
 
-        <div className='mt-[30px]'>
-          <div className='flex items-center justify-between'>
-            <h1 className='font-bold text-xl'>List Tweet</h1>
-            <Link to='/create-tweet'>
-              <button className='py-2 px-3  text-white rounded-lg'>
-                <PlusCircleIcon className='w-8 h-8 text-black' />
+        <div className="mt-[30px]">
+          <div className="flex items-center justify-between">
+            <h1 className="font-bold text-xl">List Tweet</h1>
+            <Link to="/create-tweet">
+              <button className="py-2 px-3 text-white rounded-lg">
+                <PlusCircleIcon className="w-8 h-8 text-black" />
               </button>
             </Link>
           </div>
 
-          <div className='mt-[10px]'>
-            {!tweets.length && <div>Data kosong</div>}
+          <div className="mt-[10px]">
+            {!tweets.length ? <div>Data kosong</div> : null}
 
-            {tweets &&
-              tweets.map((tweet: TweetEntity) => (
-                <div key={tweet.id} className='mt-3'>
-                  <h3>{tweet.content}</h3>
-                  <p>
-                    Dibuat oleh <strong>{tweet.user.name}</strong>
-                  </p>
-                </div>
-              ))}
+            {tweets.map((tweet) => (
+              <div key={tweet.id} className="mt-3">
+                <h3>{tweet.content}</h3>
+                <p>
+                  Dibuat oleh <strong>{tweet.user.name}</strong>
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default Home;
